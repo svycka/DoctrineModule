@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace DoctrineModule\Authentication\Adapter;
 
-use Doctrine\Common\Inflector\Inflector;
+use Doctrine\Inflector\InflectorFactory;
 use DoctrineModule\Options\Authentication as AuthenticationOptions;
 use Laminas\Authentication\Adapter\AbstractAdapter;
 use Laminas\Authentication\Adapter\Exception;
@@ -89,7 +89,7 @@ class ObjectRepository extends AbstractAdapter
     protected function validateIdentity(object $identity): AuthenticationResult
     {
         $credentialProperty = $this->options->getCredentialProperty();
-        $getter             = 'get' . Inflector::classify($credentialProperty);
+        $getter             = 'get' . (InflectorFactory::create()->build())->classify($credentialProperty);
         $documentCredential = null;
 
         if (method_exists($identity, $getter)) {
